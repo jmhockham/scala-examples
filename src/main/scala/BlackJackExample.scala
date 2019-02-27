@@ -31,7 +31,7 @@ class Deck {
       number <- numSeq
       suites <- suites
     } yield Card(suites, number)
-    cards.toList
+    cards.to[ListBuffer]
   }
 
   def drawCard: Card = {
