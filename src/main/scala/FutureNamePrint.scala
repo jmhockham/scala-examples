@@ -1,9 +1,13 @@
-import scala.concurrent.Future
+import java.util.concurrent.Executors
+
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 object FutureNamePrint extends App {
 
   import scala.concurrent.ExecutionContext.Implicits.global
+//  implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(3))
+
 
   val fTomName: Future[String] = Future {
     "Thomas"
