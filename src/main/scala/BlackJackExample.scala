@@ -3,17 +3,7 @@ import scala.collection.mutable.ListBuffer
 
 object BlackJackExample {
 
-
-
   val rnd = new scala.util.Random
-  val start = 1
-  val end   = 21
-
-//  getNumber
-
-  private def getNumber = {
-    start + rnd.nextInt((end - start) + 1)
-  }
 
 
 
