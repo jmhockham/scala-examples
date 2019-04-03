@@ -66,8 +66,10 @@ object Persons {
 object Numeric {
 
   /** Return the divisors of n. */
-  def divisors(n: Int): List[Int] =
-    for (i <- List.range(1, n+1) if n % i == 0) yield i
+  def divisors(n: Int): List[Int] = {
+    //    for (i <- List.range(1, n+1) if n % i == 0) yield i
+    (for (i <- 1 to n+1 if n % i == 0) yield i).toList
+  }
 
   /** Is 'n' a prime number? */
   def isPrime(n: Int) = divisors(n).length == 2

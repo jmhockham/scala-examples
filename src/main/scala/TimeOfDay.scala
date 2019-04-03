@@ -1,4 +1,5 @@
 object TimeOfDay extends App {
+
   class DateError extends Exception
 
   /** Simulating properties in Scala

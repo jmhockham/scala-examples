@@ -13,6 +13,7 @@ class Deck {
 
   val rnd = new scala.util.Random
   var cards: ListBuffer[Card] = populateDeck
+  val uniqueCards = mutable.Set.empty
 
   def populateDeck: ListBuffer[Card] = {
     val numSeq = 1 to 13
