@@ -1,3 +1,5 @@
+package guardian_tests
+
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 

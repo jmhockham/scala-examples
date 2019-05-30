@@ -1,3 +1,5 @@
+package guardian_tests
+
 import scala.io.StdIn
 
 object GameOfLife extends App {

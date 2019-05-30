@@ -1,17 +1,44 @@
-import scala.collection.immutable
+import java.io
 
+/**
+  * Dumping ground for testing for loops
+  */
 object ForTesting extends App {
 
   val xValues = 1 to 4
   val yValues = 1 to 2
 
-  private val tuples: immutable.IndexedSeq[(Int, Int)] = for {
+  private val tuples: Seq[(Int, Int)] = for {
     x <- xValues
     y <- yValues
   } yield (x, y)
 
   //Vector((1,1), (1,2), (2,1), (2,2), (3,1), (3,2), (4,1), (4,2))
   println(tuples)
+
+  private val maybeTuple = tuples.find { case (a, b) => a >= 4 }
+  private val tupleTest: (Int, Int) = maybeTuple.getOrElse((0,0))
+  private val seqOpt: Seq[Option[Int]] = for {
+    x <- xValues
+    opt <- Some(x)
+  } yield Some(opt)
+
+  val seqOptWithNone: Seq[Option[Int]] = seqOpt ++ Seq(None)
+
+  val seqOpt2: Seq[Int] = seqOptWithNone.flatMap { x =>
+    val i = x.getOrElse(0)
+    Some(i)
+  }.sorted
+//  }.sortWith((first,second) => first<second)
+
+  private val seqMixed: Seq[Any] = Seq("", Some(132), "", None)
+  val seqStuff: Seq[Int] = seqMixed.collect {
+    case Some(x:Int) => x
+  }
+
+  println(s"seqOpt: ${seqOpt.mkString(",")}")
+  println(s"seqOpt2: ${seqOpt2.mkString(",")}")
+  println(s"seqOptWithNone: ${seqOptWithNone.mkString(",")}")
 
   val nums = tuples.map{ case (xValue, yValue) =>
     List(xValue)

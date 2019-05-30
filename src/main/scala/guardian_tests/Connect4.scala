@@ -1,3 +1,5 @@
+package guardian_tests
+
 object Connect4 extends App {
 
   private val columns = 6
