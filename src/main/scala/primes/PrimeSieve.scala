@@ -4,6 +4,8 @@ import scala.collection.mutable
 
 /*
 
+  shamelessly stolen from https://medium.com/coding-with-clarity/functional-vs-iterative-prime-numbers-in-scala-7e22447146f0
+
   //iterative
   def primesIterative(end: Int): List[Int] = {
     val primeIndices = mutable.ArrayBuffer.fill((end + 1) / 2)(1)
