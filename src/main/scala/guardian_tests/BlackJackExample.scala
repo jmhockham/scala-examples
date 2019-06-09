@@ -5,36 +5,37 @@ import scala.collection.mutable.ListBuffer
 
 object BlackJackExample {
 
-  val rnd = new scala.util.Random
-
-
 
 }
 
-class Deck {
+class DeckHandler(cards: List[Card] = DeckHandler.populateDeck) {
 
   val rnd = new scala.util.Random
-  var cards: ListBuffer[Card] = populateDeck
   val uniqueCards = mutable.Set.empty
 
-  def populateDeck: ListBuffer[Card] = {
+  def removeCardFromDeck(cardToRemove: Card) = {
+    cards.filterNot(_==cardToRemove)
+  }
+
+  def drawCard(deckOfCards: List[Card]): Card = {
+    val index = rnd.nextInt(cards.size)
+    val card = cards(index)
+//    cards = cards.filterNot(_==card)
+    card
+  }
+
+}
+
+object DeckHandler {
+  def populateDeck: List[Card] = {
     val numSeq = 1 to 13
     val suites = Seq("Spades","Clubs","Diamonds","Hearts")
     val cards: Seq[Card] = for {
       number <- numSeq
       suites <- suites
     } yield Card(suites, number)
-    cards.to[ListBuffer]
+    cards.toList
   }
-
-  def drawCard: Card = {
-    val index = rnd.nextInt(cards.size)
-    val card = cards(index)
-    cards = cards.filterNot(_==card)
-    card
-  }
-
-
 }
 
 case class Card (suite: String, value: Int)
