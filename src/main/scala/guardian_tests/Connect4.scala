@@ -1,5 +1,7 @@
 package guardian_tests
 
+import java.rmi.UnexpectedException
+
 object Connect4 extends App {
 
   private val columns = 6
@@ -11,6 +13,7 @@ object Connect4 extends App {
   List(t).foreach {
     case Token(_, _, Yellow) => println("found a yellow")
     case Token(_, _, Red) => println("found a red")
+    case _ => throw new UnexpectedException("No red/yellow tokens in the list!")
   }
 
   def checkVertical() = {
