@@ -24,8 +24,8 @@ object CollectionsTesting extends App {
   println(s"reduceLeft: $total")
 
   //foldLeft
-  private val totalFoldded: Int = fourThrees.foldLeft(10)((prevTotal, nextNumber) => prevTotal + nextNumber)
-  println(s"foldLeft: $totalFoldded")
+  private val totalFolded: Int = fourThrees.foldLeft(10)((prevTotal, nextNumber) => prevTotal + nextNumber)
+  println(s"foldLeft: $totalFolded")
 
   //dropping something
   println("droped letter: " + testList.drop(1))
@@ -41,13 +41,13 @@ object CollectionsTesting extends App {
     for {
       a <- ints
     } yield a * 4
-    ).toList
+  ).toList
 
   println("list of fours: " + factorFourList)
 
   //using collect
   val mixedList: List[Any] = factorFourList ++ "four"
-  private val sanitizedList: List[Int] = factorFourList.collect {
+  private val sanitizedList: List[Int] = mixedList.collect {
     case i: Int if i == 4 => i
   }
   println("sanitizedList: " + sanitizedList)
@@ -96,6 +96,19 @@ object CollectionsTesting extends App {
       }
     }: _*)
   println(s"countsOfElems: ${countsOfElems.mkString(",")}")
+
+  val listOptions: List[Option[Int]] = List(Some(1), None, Some(2))
+  //can just flatten to get rid of option wrapper (somes/nones) in a collection
+  val noOptList: List[Int] = listOptions.flatten.map { x => x+1 }
+  //flatMap maps THEN flattens, so it's better if you want to fiddle with internals/wrappers first
+  val noOptList2: List[Int] = listOptions.flatMap{ x=>
+      x match {
+        case Some(number: Int) => Some(number+1)
+        case None => None
+      }
+  }
+  println("noOptList: "+noOptList.mkString(","))
+  println("noOptList2: "+noOptList2.mkString(","))
 
 
 }

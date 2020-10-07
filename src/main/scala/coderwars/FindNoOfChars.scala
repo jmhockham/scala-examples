@@ -19,6 +19,14 @@ XO("zzoo") => false
 
 object FindNoOfChars {
 
+  def hasSameNumberOfChars(charsToFind: HashSet[Char], str: String): Boolean = {
+    val results = findNumberOfChars(charsToFind,str)
+    if(results.isEmpty)
+      true
+    else
+      false
+  }
+
   def findNumberOfChars(charsToFind: HashSet[Char], str: String): Map[Char,Int] = {
     findNumberOfCharsRecur(charsToFind, str, HashMap.empty[Char,Int])
   }
@@ -29,24 +37,16 @@ object FindNoOfChars {
       results
     } else {
       val charToExamine = remainingChars.head
-      val updatedMap: Map[Char, Int] = updateMapIfCharValid(charToExamine, charsToFind, results)
-      findNumberOfCharsRecur(charsToFind, remainingChars.tail, updatedMap)
+      val updatedResults: Map[Char, Int] = updateResultsIfCharValid(charToExamine, charsToFind, results)
+      findNumberOfCharsRecur(charsToFind, remainingChars.tail, updatedResults)
     }
 
   }
 
-  private def updateMapIfCharValid(charToExamine: Char, charsToFind: HashSet[Char], results: Map[Char, Int]) = {
+  private def updateResultsIfCharValid(charToExamine: Char, charsToFind: HashSet[Char], results: Map[Char, Int]) = {
     if (charsToFind.contains(charToExamine)) {
       results + (charToExamine -> (results.getOrElse(charToExamine, 0) + 1))
     } else results
-  }
-
-  def hasSameNumberOfChars(charsToFind: HashSet[Char], str: String): Boolean = {
-    val results = findNumberOfChars(charsToFind,str)
-    if(results.isEmpty)
-      true
-    else
-      false
   }
 
 }
