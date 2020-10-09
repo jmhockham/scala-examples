@@ -24,8 +24,10 @@ object FizzBuzz {
     */
   def getFizzBuzzSeq(n: Int): Seq[String] = {
     n match {
-      case i if i <= 0 => Seq.empty
-      case _ => for (i <- 1 to n) yield getFizzBuzzString(i)
+      case number if (number <= 0) => Seq.empty
+      case _ =>
+        for (i <- 1 to n)
+          yield getFizzBuzzString(i)
     }
   }
 
@@ -39,7 +41,7 @@ object FizzBuzz {
 
   def getFizzBuzzString(n: Int): String = {
     n match {
-      case i if i <= 0 => ""
+      case number if (number <= 0) => ""
       case _ => "" + (if (n % 3 == 0) "Fizz" else "") + (if (n % 5 == 0) "Buzz" else "")
     }
   }

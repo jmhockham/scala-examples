@@ -1,33 +1,123 @@
 package guardian_tests
 
-import java.rmi.UnexpectedException
+import scala.annotation.tailrec
+import scala.collection.mutable
+
+class Connect4(xAxisLength: Int = 6, yAxisLength: Int = 6, winningLineLength: Int = 4) {
+
+  var allTokens: mutable.ListBuffer[Token] = mutable.ListBuffer.empty[Token]
+
+  def addToken(xPos: Int, yPos: Int, colour: Colour): mutable.ListBuffer[Token] = {
+    val tokenExists = allTokens.contains(Token(xPos,yPos,colour))
+    if(!tokenExists){
+      allTokens += Token(xPos,yPos,colour)
+    }
+    else {
+      allTokens
+    }
+  }
+
+  /**
+    * Convenience function; checks all the winning conditions for a given token
+    * @param t - the toekn to check
+    * @return a boolean denoting whether there's a win condition
+    */
+  def checkWin(t: Token): Boolean = {
+    checkVertical(t) || checkHorizontal(t) || checkDiagonal(t)
+  }
+
+  /**
+    * Given a position, see if the vertical (up/down) cells match the colour
+    * @param token the token to check
+    * @return a boolean denoting whether or not there are [winningLineLength] same-colour tokens in a vertical line
+    */
+  def checkVertical(token: Token): Boolean = {
+    val tokenExists = allTokens.contains(token)
+    if(!tokenExists){
+      false
+    }
+    else {
+      //we -1 on the counts, so that we don't count the current token
+      val downCount = countContiguousCells(None,Some(true),0,token) -1
+      val upCount = countContiguousCells(None,Some(false),0,token) -1
+      (1 + upCount + downCount) >= winningLineLength
+    }
+  }
+
+  /**
+    * Given a position, see if the horizontal cells match the colour
+    * @param token the token to check
+    * @return a boolean denoting whether or not there are [winningLineLength] same-colour tokens in a horizontal line
+    */
+  def checkHorizontal(token: Token): Boolean = {
+    val tokenExists = allTokens.contains(token)
+    if(!tokenExists){
+      false
+    }
+    else {
+      //we -1 on the counts, so that we don't count the current token
+      val leftCount = countContiguousCells(Some(true),None,0,token) -1
+      val rightCount = countContiguousCells(Some(false),None,0,token) -1
+      (1 + leftCount + rightCount) >= winningLineLength
+    }
+  }
+
+  /**
+    * Given a position, check the diagonal cells match the colour
+    * @param token - the token to check
+    * @return a boolean denoting whether or not there are [winningLineLength] same-colour tokens in a diagonal line
+    */
+  def checkDiagonal(token: Token): Boolean = {
+    val tokenExists = allTokens.contains(token)
+    if(!tokenExists){
+      false
+    }
+    else{
+      //we -1 on the counts, so that we don't count the current token
+      val downLeftCount = countContiguousCells(Some(true),Some(true),0,token) -1
+      val upLeftCount = countContiguousCells(Some(true),Some(false),0,token) -1
+      val downRightCount = countContiguousCells(Some(false),Some(true),0,token) -1
+      val upRightCount = countContiguousCells(Some(false),Some(false),0,token) -1
+      (1 + downLeftCount + upLeftCount + downRightCount + upRightCount) >= winningLineLength
+    }
+  }
+
+  @tailrec
+  private final def countContiguousCells(decrementXPos: Option[Boolean], decrementYPos: Option[Boolean], currentCount: Int, token: Token): Int = {
+    val tokenExists = allTokens.contains(token)
+    if (!tokenExists) {
+      currentCount
+    }
+    else{
+      val newXPos = decrementXPos match {
+        case Some(true) => token.x-1
+        case Some(false) => token.x+1
+        case None => token.x
+      }
+      val newYPos = decrementYPos match {
+        case Some(true) => token.y-1
+        case Some(false) => token.y+1
+        case None => token.y
+      }
+      val nextPotentialToken = Token(newXPos,newYPos,token.colour)
+      countContiguousCells(decrementXPos, decrementYPos, currentCount+1, nextPotentialToken)
+    }
+  }
+
+}
 
 object Connect4 extends App {
-
-  private val columns = 6
-  private val rows = 7
-  private val grid: List[List[Int]] = List.fill(columns)(List(rows))
-
+  /*
   val t = Token(1,1,Yellow)
 
-  List(t).foreach {
+  val allTokens = List(t)
+
+  allTokens.foreach {
     case Token(_, _, Yellow) => println("found a yellow")
     case Token(_, _, Red) => println("found a red")
     case _ => throw new UnexpectedException("No red/yellow tokens in the list!")
   }
-
-  def checkVertical() = {
-
-  }
-
-  def checkHorizontal() = {
-
-  }
-
-  def checkDiagonal() = {
-
-  }
-
+  */
 }
 
 trait Colour

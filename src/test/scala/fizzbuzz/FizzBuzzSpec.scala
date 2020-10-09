@@ -2,7 +2,7 @@ package fizzbuzz
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class FizzBuzzSpec extends FlatSpec with Matchers{
+class FizzBuzzSpec extends FlatSpec with Matchers {
 
   "getFizzBuzzString" should "print out Fizz for multiples of 3" in {
     FizzBuzz.getFizzBuzzString(-1) shouldBe ""

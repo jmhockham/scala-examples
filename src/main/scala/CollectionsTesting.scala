@@ -9,7 +9,7 @@ object CollectionsTesting extends App {
 
   //doing a diff
   private val testList = List("a", "a", "h")
-  private val diffList: List[String] = testList diff List("a")
+  private val diffList: List[String] = testList diff List("x","a")
   println(s"diff: $diffList")
 
   //doing an intersect
@@ -62,10 +62,17 @@ object CollectionsTesting extends App {
   //we get Set("2")
   println(s"setCommonElems ${setCommonElems.mkString(",")}")
 
-  //retain with a set (only for mutable as it modifies existing collection; use filter for immutable)
+  //retain with a set (only for mutable as it modifies existing collection; use filter or intersect for immutable)
   val setMutable: mutable.Set[String] = mutable.Set("1", "2", "3")
   setMutable.retain(setTwo.contains)
   println(s"setMutable ${setMutable.mkString(",")}")
+
+  //and the immutable filter & intersect versions
+  val setImmutable: Set[String] = Set("1","2","3")
+  val setImmFiltered = setImmutable.filter(setThree.contains)
+  val setImmIntersect = setImmutable.intersect(setThree)
+  println(s"setImmFiltered ${setImmFiltered.mkString(",")}")
+  println(s"setImmIntersect ${setImmIntersect.mkString(",")}")
 
   //check which elems are in all sets
   val firstSet = setOne
