@@ -3,12 +3,28 @@ package fibonacci
 import scala.annotation.tailrec
 import scala.collection.immutable.HashSet
 import scala.collection.immutable.Stream.Empty.scanLeft
+import scala.collection.mutable
 
 object FibonacciSequence extends App {
 
   println(fiboRecur(10).mkString(","))
   println(fiboStream(10).mkString(","))
-  fiboRecurInf(10)
+  println(fiboIter(10).mkString(","))
+  //fiboRecurInf(10)
+
+  def fiboIter(iterations: Int) = {
+    val numberRange = 2 until iterations
+    val results = mutable.Stack(1,0)
+    if(iterations<=2){
+      results.reverse.take(iterations).toList
+    }
+    else {
+      for{
+        i <- numberRange
+      } yield results.push(results.head + results.tail.head)
+      results.reverse.toList
+    }
+  }
 
   // see https://stackoverflow.com/questions/9864497/generate-a-sequence-of-fibonacci-number-in-scala
   // and (if you can withstand the ego) http://www.luigip.com/?p=200
