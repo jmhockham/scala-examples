@@ -2,15 +2,19 @@ package coderwars
 
 import scala.annotation.tailrec
 
-object StringConditions {
+object StringConditions extends App {
 
   val vowels: Seq[Char] = Seq('a', 'e', 'i', 'o', 'u')
   val forbiddenCharPairs: Seq[String] = Seq("ab", "cd", "pq", "xy")
 
-  def nice(xs: List[String]): Int = {
-    xs.count { str =>
-      hasThreeVowels(str) && hasDoubleOccurrence(str) && !hasForbiddenChars(str)
+  println(s"""Acceptable words in the following list ["abc","aaee","eeyore"]: \n ${nice(List("abc","aaee","eeyore"))} """)
+
+  def nice(xs: List[String]): List[(String, Boolean)] = {
+    val results = xs.map { str =>
+      val valid = hasThreeVowels(str) && hasDoubleOccurrence(str) && !hasForbiddenChars(str)
+      (str, valid)
     }
+    results
   }
 
   def hasThreeVowels(string: String): Boolean = {
