@@ -23,6 +23,10 @@ object CollectionsTesting extends App {
   private val total: Int = fourThrees reduceLeft ((prevTotal, nextNumber) => prevTotal + nextNumber)
   println(s"reduceLeft: $total")
 
+  //reduce is MOSTLY the same as reduceLeft, except the order is unspecified (depends on the collection)
+  private val totalReduced = fourThrees reduce ((prevTotal, nextNumber) => prevTotal + nextNumber)
+  println(s"reduce: $totalReduced")
+
   //foldLeft
   private val totalFolded: Int = fourThrees.foldLeft(10)((prevTotal, nextNumber) => prevTotal + nextNumber)
   println(s"foldLeft: $totalFolded")
@@ -83,11 +87,9 @@ object CollectionsTesting extends App {
   //do a count of the number of entries for each of the three sets (uses mutable)
   private val seqSets: Seq[Set[String]] = Seq(setOne, setTwo, setThree)
   val mapCounts = new mutable.HashMap[String, Int]()
-  seqSets.map {
-    _.map { elem =>
+  seqSets.flatten.map { elem =>
       val count = mapCounts.getOrElseUpdate(elem, 0)
       mapCounts.put(elem, count + 1)
-    }
   }
   println(s"mapCounts ${mapCounts.mkString(",")}")
 
@@ -108,8 +110,8 @@ object CollectionsTesting extends App {
   //can just flatten to get rid of option wrapper (somes/nones) in a collection
   val noOptList: List[Int] = listOptions.flatten.map { x => x+1 }
   //flatMap maps THEN flattens, so it's better if you want to fiddle with internals/wrappers first
-  val noOptList2: List[Int] = listOptions.flatMap{ x=>
-      x match {
+  val noOptList2: List[Int] = listOptions.flatMap{ option =>
+      option match {
         case Some(number: Int) => Some(number+1)
         case None => None
       }
@@ -117,5 +119,17 @@ object CollectionsTesting extends App {
   println("noOptList: "+noOptList.mkString(","))
   println("noOptList2: "+noOptList2.mkString(","))
 
+  //print duplicates in a list with their count
+  //example input: List(1,1,1,2,3,4,5,5,6,100,101,101,102) Should print: List((1,3), (5,2), (101,2))
+  //https://stackoverflow.com/questions/42029053/scala-collect-function
+
+  def listDuplicates(listContainingDupes: List[Int]): List[(Int,Int)] = {
+    listContainingDupes.groupBy(identity)
+      .collect{ case(number, listOfDuplicates) if listOfDuplicates.size>=2 => (number, listOfDuplicates.size) }
+      .toList
+      .sortBy(_._1)
+  }
+
+  println(s"listDuplicates: ${listDuplicates(List(1,1,1,2,3,4,5,5,6,100,101,101,102))}")
 
 }
