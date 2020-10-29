@@ -7,7 +7,7 @@ class Connect4(xAxisLength: Int = 6, yAxisLength: Int = 6, winningLineLength: In
 
   var allTokens: mutable.ListBuffer[Token] = mutable.ListBuffer.empty[Token]
 
-  def addToken(xPos: Int, yPos: Int, colour: Colour): mutable.ListBuffer[Token] = {
+  def addTokenAnywhere(xPos: Int, yPos: Int, colour: Colour): mutable.ListBuffer[Token] = {
     val tokenExists = allTokens.contains(Token(xPos,yPos,colour))
     if(!tokenExists){
       allTokens += Token(xPos,yPos,colour)
@@ -18,8 +18,40 @@ class Connect4(xAxisLength: Int = 6, yAxisLength: Int = 6, winningLineLength: In
   }
 
   /**
+    * Adds a token to the vertical game board. "Gravity" causes the token to drop to the lowest possible y axis
+    * @param xPos the x axis that we're adding the token
+    * @param colour the colour of the token
+    * @return the list of all tokens. Will be +1 if the addition was successful
+    */
+  def addToken(xPos: Int, colour: Colour): mutable.ListBuffer[Token] = {
+    //find all the tokens at this X axis
+    if(0 to xAxisLength contains xPos){
+      val existingTokens = allTokens.filter(t => t.x == xPos)
+      //get the next available yPos
+      val nextYPos = if (existingTokens.nonEmpty) existingTokens.maxBy(_.y).y + 1 else 1
+      if(0 to yAxisLength contains nextYPos){
+        addTokenAnywhere(xPos, nextYPos, colour)
+      }
+      else{
+        allTokens
+      }
+    }
+    else{
+      allTokens
+    }
+  }
+
+  /**
+    * Function to check if there's a win condition or not
+    * @return a boolean denoting if any of the tokens have 4 of the same colour in a line
+    */
+  def checkWin(): Boolean = {
+    allTokens.exists(checkWin)
+  }
+
+  /**
     * Convenience function; checks all the winning conditions for a given token
-    * @param t - the toekn to check
+    * @param t - the token to check
     * @return a boolean denoting whether there's a win condition
     */
   def checkWin(t: Token): Boolean = {
