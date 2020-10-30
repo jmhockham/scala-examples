@@ -116,14 +116,24 @@ object CollectionsTesting extends App {
         case None => None
       }
   }
+  //can also do old school for iteration to go over the options
+  val listOfValues = for (
+    wrapper <- listOptions;
+    value <- wrapper
+  ) yield value
   println("noOptList: "+noOptList.mkString(","))
   println("noOptList2: "+noOptList2.mkString(","))
+  println("listOfValues: "+listOfValues.mkString(","))
 
   //print duplicates in a list with their count
   //example input: List(1,1,1,2,3,4,5,5,6,100,101,101,102) Should print: List((1,3), (5,2), (101,2))
   //https://stackoverflow.com/questions/42029053/scala-collect-function
 
   def listDuplicates(listContainingDupes: List[Int]): List[(Int,Int)] = {
+    // the listContainingDupes.groupBy(identity) is like going
+    // listContainingDupes.groupBy(int => int)
+    // or
+    // listContainingDupes.groupBy(int => identity(int))
     listContainingDupes.groupBy(identity)
       .collect{ case(number, listOfDuplicates) if listOfDuplicates.size>=2 => (number, listOfDuplicates.size) }
       .toList
@@ -132,4 +142,17 @@ object CollectionsTesting extends App {
 
   println(s"listDuplicates: ${listDuplicates(List(1,1,1,2,3,4,5,5,6,100,101,101,102))}")
 
+  val e: Either[Double, Float] = Right(1.0f)
+  val eitherFoldedExplicit = e.fold(d => d, f => f.toDouble)
+  val eitherFoldedImplied = e.fold(identity, _.toDouble)
+  println(s"eitherFoldedExplicit: $eitherFoldedExplicit")
+  println(s"eitherFoldedImplied: $eitherFoldedImplied")
+
+  val listOfWords = List("YES","YES","YES","NO","NO","NO","MAYBE","MAYBE","MAYBE")
+  val groupEveryThree = listOfWords.grouped(3)
+  val groupedByLength = listOfWords.groupBy(s => s.length)
+  val groupedByDuplication = listOfWords.groupBy(s => s)
+  println(s"groupEveryThree: ${groupEveryThree.mkString(", ")}}")
+  println(s"groupedByLength: ${groupedByLength.mkString(", ")}")
+  println(s"groupedByDuplication: ${groupedByDuplication.mkString(", ")}")
 }

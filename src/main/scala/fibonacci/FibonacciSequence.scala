@@ -1,8 +1,6 @@
 package fibonacci
 
 import scala.annotation.tailrec
-import scala.collection.immutable.HashSet
-import scala.collection.immutable.Stream.Empty.scanLeft
 import scala.collection.mutable
 
 object FibonacciSequence extends App {
@@ -19,7 +17,7 @@ object FibonacciSequence extends App {
       results.reverse.take(iterations).toList
     }
     else {
-      for{
+      for {
         i <- numberRange
       } yield results.push(results.head + results.tail.head)
       results.reverse.toList

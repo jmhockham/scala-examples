@@ -45,12 +45,12 @@ import scala.collection.mutable
 
   */
 
-object PrimeSieve {
+object PrimeSieve extends App {
 
   def findPrimes(endNumber: Int) = {
 
     endNumber match {
-      case number if number < 3 && number > 0 => List(2)
+      case number if number < 3 && number > 0 => List(1)
       case number if number <0 => List.empty[Int]
       case _ =>
         val primeIndices = mutable.ArrayBuffer.fill((endNumber + 1) / 2)(1)
@@ -62,11 +62,10 @@ object PrimeSieve {
         } yield primeIndices.update(nonPrime / 2, 0)
 
         val primes = for (i <- primeIndices.indices if primeIndices(i) == 1) yield 2 * i + 1
-        List(2) ++ primes.tail.toList
+        primes
     }
-
-
-
   }
+
+  println(findPrimes(50).mkString(", "))
 
 }

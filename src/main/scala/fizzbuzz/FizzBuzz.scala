@@ -23,26 +23,25 @@ object FizzBuzz {
     * @return the seq of string results
     */
   def getFizzBuzzSeq(n: Int): Seq[String] = {
-    n match {
-      case number if (number <= 0) => Seq.empty
-      case _ =>
-        for (i <- 1 to n)
-          yield getFizzBuzzString(i)
+    if (n <= 0) Seq.empty
+    else {
+      for (i <- 1 to n)
+        yield getFizzBuzzString(i)
     }
   }
 
   /**
     * Creates a string based on the fizzbuzz logic - if n is divisible by three then return "Fizz", if it's divisible
-    * by 5 return "Buzz", if it's divisible by both 3 & 5 then "FizzBuzz". Empty strings are returned inn other cases.
+    * by 5 return "Buzz", if it's divisible by both 3 & 5 then "FizzBuzz". Empty strings are returned in other cases.
     *
-    * @param n the number to test
+    * @param number the number to test
     * @return a string which is "","Fizz","Buzz", or "FizzBuzz"
     */
 
-  def getFizzBuzzString(n: Int): String = {
-    n match {
-      case number if (number <= 0) => ""
-      case _ => "" + (if (n % 3 == 0) "Fizz" else "") + (if (n % 5 == 0) "Buzz" else "")
+  def getFizzBuzzString(number: Int): String = {
+    if (number <= 0) "" else {
+      (if (number % 3 == 0) "Fizz" else "") +
+        (if (number % 5 == 0) "Buzz" else "")
     }
   }
 }
