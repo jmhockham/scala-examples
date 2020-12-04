@@ -107,9 +107,13 @@ object CollectionsTesting extends App {
   println(s"countsOfElems: ${countsOfElems.mkString(",")}")
 
   val listOptions: List[Option[Int]] = List(Some(1), None, Some(2))
-  //can just flatten to get rid of option wrapper (somes/nones) in a collection
+  //can just flatten to get rid of Option wrapper (somes/nones) in a collection
   val noOptList: List[Int] = listOptions.flatten.map { x => x+1 }
-  //flatMap maps THEN flattens, so it's better if you want to fiddle with internals/wrappers first
+  //flatmap on a None can't ever map (as there's no wrapped value), so IDE will prompt to replace with flatten
+  val noneFlat: Option[Nothing] = None.flatMap(x => x)
+  //Option.flatMap will flatten first, then try to construct another option afterwards
+  val someFlat: Option[Int] = Some(2).flatMap(x => Some(x+1))
+  //List.flatMap maps THEN flattens, so it's better if you want to fiddle with internals/wrappers first
   val noOptList2: List[Int] = listOptions.flatMap{ option =>
       option match {
         case Some(number: Int) => Some(number+1)
@@ -147,6 +151,10 @@ object CollectionsTesting extends App {
   val eitherFoldedImplied = e.fold(identity, _.toDouble)
   println(s"eitherFoldedExplicit: $eitherFoldedExplicit")
   println(s"eitherFoldedImplied: $eitherFoldedImplied")
+  //flatMap reconstructs the Either Right, if it's already a Right
+  val eitherFlatMapVal: Either[Double, Int] = e.flatMap(f => Right(f.toInt))
+  //map on an Either only does something if a value is a Right, otherwise nothing happens
+  val eitherMappedVal: Either[Double, String] = e.map(f => f.toString)
 
   val listOfWords = List("YES","YES","YES","NO","NO","NO","MAYBE","MAYBE","MAYBE")
   val groupEveryThree = listOfWords.grouped(3)
