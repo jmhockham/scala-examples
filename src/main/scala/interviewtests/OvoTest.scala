@@ -18,7 +18,7 @@ object OvoTest extends App {
   @tailrec
   def takeStuff(strList: List[String], limit: Int, results: List[String] = List.empty, index: Int = 0): List[String] = {
 
-    val indexUpd = if(index>=strList.size-1) 0 else index
+    val indexUpd = if(index>=strList.size) 0 else index
 
     if(results.size>=limit){
       results
@@ -29,15 +29,20 @@ object OvoTest extends App {
   }
 
   def takeStuffIter(strList: List[String], limit: Int) = {
-    val sb = StringBuilder.newBuilder
-    var i = 0
-    for(i <- 0 to limit) yield {
-      i=0
+    var sb:List[String] = List.empty
+    var index = -1
+    var count = 0
+    while(count<=strList.size){
+      index = if(index>=strList.size-1) 0 else index+1
+      val str = strList(index);
+      sb = sb ++ List(str)
+      count = count+1
     }
-
+    sb
   }
 
   println(takeStuff(List("apple", "pear", "lemon", "orange"),5))
+  println(takeStuffIter(List("apple", "pear", "lemon", "orange"),5))
 
 }
 
