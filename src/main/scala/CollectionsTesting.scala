@@ -122,8 +122,8 @@ object CollectionsTesting extends App {
   }
   //can also do old school for iteration to go over the options
   val listOfValues = for (
-    wrapper <- listOptions;
-    value <- wrapper
+    optionWrapper <- listOptions;
+    value <- optionWrapper
   ) yield value
   println("noOptList: "+noOptList.mkString(","))
   println("noOptList2: "+noOptList2.mkString(","))

@@ -24,4 +24,9 @@ object OptionExamples extends App {
 
   diffOptn.foreach(println(_))
 
+  optionStr match {
+    case Some(_) => println(s"options has value: ${_}")
+    case _ => println("nothing")
+  }
+
 }
