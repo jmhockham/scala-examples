@@ -9,7 +9,7 @@ object OptionExamples extends App {
     println(s"have a value: $s; length: ${s.length}")
   }).orElse({
     println("don't have a value")
-    Some("another thing")
+    None
   })
 
   // if/else, returning something
